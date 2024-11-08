@@ -1,0 +1,24 @@
+{
+  "name": "RPGkataTS",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "tsc && vitest run",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.8",
+    "@types/node": "^22.9.0",
+    "prettier": "^3.3.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "vitest": "^2.1.4",
+    "vitest-mock-extended": "^2.0.2"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
