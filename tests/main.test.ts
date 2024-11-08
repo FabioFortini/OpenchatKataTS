@@ -1,6 +1,9 @@
 import {describe, expect, it} from 'vitest'
-import {OpenChat} from "../src/OpenChat";
+import {CreatePostUseCase, OpenChat, Post} from "../src/OpenChat";
 import {mock} from "vitest-mock-extended";
+
+
+
 
 describe("Timeline APIs", () => {
     const userId = "1234";
