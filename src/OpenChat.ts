@@ -9,7 +9,7 @@ export type Post = {
 }
 
 export interface CreatePostError {
-    errorType: "USER_NOT_FOUND"
+    errorType: "USER_NOT_FOUND" | "INAPPROPRIATE_LANGUAGE"
 }
 
 export interface CreatePostUseCase {
@@ -28,12 +28,12 @@ export class OpenChat {
     start() {
         const app = express();
         app.use(express.json());
-        app.post("/users/:userId/timeline", async (req, res) => {
+        app.post("/users/:userId/timeline", (req: any, res: any) => {
             let createPostResult = this._createPostUseCase.execute(req.params.userId, req.body.text);
-            if ((createPostResult as CreatePostError).errorType === "USER_NOT_FOUND") {
-                res.sendStatus(404)
-                return
-            }
+            let error = (createPostResult as CreatePostError).errorType;
+            if (error === "USER_NOT_FOUND") return res.sendStatus(404)
+            if (error === "INAPPROPRIATE_LANGUAGE") return res.sendStatus(400)
+
             res.json(createPostResult)
         })
 

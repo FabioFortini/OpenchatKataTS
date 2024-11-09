@@ -2,9 +2,6 @@ import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 import {CreatePostError, CreatePostUseCase, OpenChat, Post} from "../src/OpenChat";
 import {mock} from "vitest-mock-extended";
 
-
-
-
 describe("Create Post API", () => {
     const mockCreatePostUseCase = mock<CreatePostUseCase>()
     const openChat = new OpenChat(mockCreatePostUseCase)
@@ -45,7 +42,7 @@ describe("Create Post API", () => {
             errorType: "USER_NOT_FOUND"
         } as CreatePostError);
 
-        const result = await fetch(`http://localhost:3000/users/any/timeline`, {
+        const result = await fetch(`http://localhost:3000/users/non-existing/timeline`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -54,5 +51,21 @@ describe("Create Post API", () => {
         });
 
         expect(result.status).toEqual(404)
+    })
+
+    it("returns 400 when contains inappropriate language", async () => {
+        mockCreatePostUseCase.execute.mockReturnValue({
+            errorType: "INAPPROPRIATE_LANGUAGE"
+        } as CreatePostError);
+
+        const result = await fetch(`http://localhost:3000/users/${userId}/timeline`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"text": "this will be inappropriate"})
+        });
+
+        expect(result.status).toEqual(400)
     })
 })
