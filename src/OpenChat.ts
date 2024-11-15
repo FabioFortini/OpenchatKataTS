@@ -1,20 +1,6 @@
 import express from "express";
 import * as http from "node:http";
-
-export type Post = {
-    postId: string;
-    userId: string;
-    text: string;
-    dateTime: string;
-}
-
-export interface CreatePostError {
-    errorType: "USER_NOT_FOUND" | "INAPPROPRIATE_LANGUAGE"
-}
-
-export interface CreatePostUseCase {
-    execute(userId: string, content: string): Post | CreatePostError;
-}
+import {CreatePostError, CreatePostUseCase} from "./CreatePostUseCase.ts";
 
 export class OpenChat {
     private server?: http.Server;
