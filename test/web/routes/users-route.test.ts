@@ -1,7 +1,7 @@
 import {describe, test} from 'node:test'
 import * as assert from 'node:assert'
-import {runApp} from '../helper'
-import {RegisterUserRequest} from "../../src/register-user-request";
+import {runApp} from '../../helper'
+import {RegisterUserRequest} from "../../../src/domain/register-user-request";
 
 
 describe('users route', () => {

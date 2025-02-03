@@ -1,5 +1,5 @@
-import {UserRepository} from "./user-repository";
-import {User} from "./user";
+import {UserRepository} from "../domain/user-repository";
+import {User} from "../domain/user";
 import {randomUUID} from "node:crypto";
 
 export class InMemoryUserRepository implements UserRepository {

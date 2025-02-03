@@ -1,8 +1,8 @@
 import {FastifyPluginAsync, FastifyReply, FastifyRequest} from "fastify"
-import {RegisterUserRequest} from "../register-user-request";
-import {User} from "../user";
-import {RegisterUserUseCase} from "../register-user-use-case";
 import {FastifyInstance} from "fastify/types/instance";
+import { RegisterUserUseCase } from "../../domain/register-user-use-case";
+import { RegisterUserRequest } from "../../domain/register-user-request";
+import { User } from "../../domain/user";
 
 type UsersDependencies = { registerUserUseCase: RegisterUserUseCase }
 type FastifyRegisterUserRequest = FastifyRequest<{ Body: RegisterUserRequest }>

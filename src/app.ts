@@ -1,9 +1,9 @@
 import {FastifyPluginAsync} from 'fastify';
-import {usersRoutes} from "./routes/users-routes";
-import {rootRoute} from "./routes/root-route";
+import {usersRoutes} from "./web/routes/users-routes";
+import {rootRoute} from "./web/routes/root-route";
 import sensible from "@fastify/sensible";
-import { RegisterUserUseCase } from './register-user-use-case';
-import { InMemoryUserRepository } from './in-memory-user-repository';
+import { RegisterUserUseCase } from './domain/register-user-use-case';
+import { InMemoryUserRepository } from './persistence/in-memory-user-repository';
 
 export const app: FastifyPluginAsync = async (fastify): Promise<void> => {
   const userRepository = new InMemoryUserRepository()
