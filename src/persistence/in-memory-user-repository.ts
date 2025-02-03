@@ -5,7 +5,7 @@ import {randomUUID} from "node:crypto";
 export class InMemoryUserRepository implements UserRepository {
   private users: Record<string, User> = {}
 
-  createUser(username: string, password: string, about: string): User | undefined {
+  async createUser(username: string, password: string, about: string): Promise<User | undefined> {
     if (this.users[username]) {
       return undefined
     }

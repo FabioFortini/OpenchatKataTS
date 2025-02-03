@@ -18,6 +18,10 @@ For production mode
 
 Run the test cases.
 
+### `npm run prisma:generate`
+
+Updates the prisma client code in order to be typesafe and reflect the schema defined in `./prisma/schema.prisma`
+
 ## Learn More
 
 To learn Fastify, check out the [Fastify documentation](https://fastify.dev/docs/latest/).

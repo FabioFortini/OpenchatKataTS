@@ -14,7 +14,7 @@ export const usersRoutes: FastifyPluginAsync<UsersDependencies> = async (fastify
   })
 
   fastify.post('/users', async function (request: FastifyRegisterUserRequest, reply: FastifyReply) {
-    const createdUser: User | undefined = deps.registerUserUseCase.execute(request.body)
+    const createdUser: User | undefined = await deps.registerUserUseCase.execute(request.body)
     if (!createdUser) {
       reply.status(400).send("Username already in use")
     }

@@ -8,7 +8,7 @@ export class RegisterUserUseCase {
     this.repository = repository;
   }
 
-  execute(user: RegisterUserRequest) {
-    return this.repository.createUser(user.username, user.password, user.about)
+  async execute(user: RegisterUserRequest) {
+    return await this.repository.createUser(user.username, user.password, user.about)
   }
 }

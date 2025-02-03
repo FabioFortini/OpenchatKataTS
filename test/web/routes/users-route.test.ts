@@ -8,9 +8,9 @@ describe('users route', () => {
     test("register a new user", async (t) => {
         const app = await runApp(t)
         const request: RegisterUserRequest = {
-            username: "pino",
-            password: "dei palazzi",
-            about: "ciao morris"
+            username: "pino2",
+            password: "dei palazzi2",
+            about: "ciao morris2"
         }
 
         const res = await app.inject({method: 'POST', url: '/users', body: request})
