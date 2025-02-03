@@ -1,10 +1,9 @@
-import {AutoloadPluginOptions} from '@fastify/autoload';
 import {FastifyPluginAsync, FastifyServerOptions} from 'fastify';
 import example from "./routes/example";
 import root from "./routes/root";
 import sensible from "@fastify/sensible";
 
-export interface AppOptions extends FastifyServerOptions, Partial<AutoloadPluginOptions> {
+export interface AppOptions extends FastifyServerOptions {
   exampleOption: string;
 }
 // Pass --options via CLI arguments in command to enable these options.
