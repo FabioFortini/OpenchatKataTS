@@ -1,6 +1,6 @@
 import { after, before, describe, beforeEach, test } from 'node:test';
 import { deepStrictEqual, equal } from 'node:assert';
-import { runApp } from '../../helper';
+import { runApp } from '../../helpers/app-runner';
 import { RegisterUserRequest } from '../../../src/domain/register-user-request';
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { Migrate } from '@prisma/migrate';
