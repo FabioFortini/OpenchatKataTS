@@ -1,9 +1,9 @@
 import { UserRepository } from '../domain/user-repository';
 import { User } from '../domain/user';
-import { randomUUID } from 'node:crypto';
 
 export class InMemoryUserRepository implements UserRepository {
   private users: Record<string, User> = {};
+  private id = 0;
 
   async createUser(username: string, password: string, about: string): Promise<User | undefined> {
     if (this.users[username]) {
@@ -11,10 +11,14 @@ export class InMemoryUserRepository implements UserRepository {
     }
 
     this.users[username] = {
-      id: randomUUID(),
+      id: this.nextId(),
       username,
       about,
     };
     return this.users[username];
+  }
+
+  private nextId(): number {
+    return this.id++;
   }
 }
