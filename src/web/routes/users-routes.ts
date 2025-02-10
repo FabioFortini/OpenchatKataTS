@@ -7,10 +7,7 @@ import { User } from '../../domain/user';
 type UsersDependencies = { registerUserUseCase: RegisterUserUseCase };
 type FastifyRegisterUserRequest = FastifyRequest<{ Body: RegisterUserRequest }>;
 
-export const usersRoutes: FastifyPluginAsync<UsersDependencies> = async (
-  fastify: FastifyInstance,
-  deps,
-) => {
+export const usersRoutes: FastifyPluginAsync<UsersDependencies> = async (fastify: FastifyInstance, deps) => {
   fastify.get('/users', async function (request: FastifyRequest, reply: FastifyReply) {
     return [];
   });
