@@ -1,5 +1,5 @@
-import {UserRepository} from "./user-repository";
-import {RegisterUserRequest} from "./register-user-request";
+import { UserRepository } from './user-repository';
+import { RegisterUserRequest } from './register-user-request';
 
 export class RegisterUserUseCase {
   private repository: UserRepository;
@@ -9,6 +9,6 @@ export class RegisterUserUseCase {
   }
 
   async execute(user: RegisterUserRequest) {
-    return await this.repository.createUser(user.username, user.password, user.about)
+    return await this.repository.createUser(user.username, user.password, user.about);
   }
 }
