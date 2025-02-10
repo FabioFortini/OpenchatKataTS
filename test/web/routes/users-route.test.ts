@@ -1,29 +1,15 @@
-import { after, before, describe, beforeEach, test } from 'node:test';
+import { after, before, beforeEach, describe, test } from 'node:test';
 import { deepStrictEqual, equal } from 'node:assert';
 import { runApp } from '../../helpers/app-runner';
 import { RegisterUserRequest } from '../../../src/domain/register-user-request';
-import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
-import { Migrate } from '@prisma/migrate';
+import { DatabaseContainer } from '../../helpers/database-container';
+
 
 describe('users route', async () => {
-  let container: StartedPostgreSqlContainer;
-  let migrate: Migrate;
-
-  before(async () => {
-    container = await new PostgreSqlContainer().start();
-    process.env.DATABASE_URL = container.getConnectionUri();
-    migrate = new Migrate('prisma/schema.prisma');
-  });
-
-  beforeEach(async () => {
-    await migrate.reset();
-    await migrate.applyMigrations();
-  });
-
-  after(() => {
-    migrate.stop();
-    container.stop();
-  });
+  const database = new DatabaseContainer();
+  before(() => database.start());
+  beforeEach(() => database.restore());
+  after(() => database.stop());
 
   test('register a new user', async (t) => {
     const app = await runApp(t);
