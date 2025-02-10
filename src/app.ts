@@ -7,7 +7,9 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaUserRepository } from './persistence/prisma-user-repository';
 
 const app: FastifyPluginAsync = async (fastify): Promise<void> => {
-  const client = new PrismaClient();
+  const client = new PrismaClient({
+    datasources: { db: { url: process.env.DATABASE_URL } }
+  });
   const userRepository = new PrismaUserRepository(client);
   const registerUserUseCase = new RegisterUserUseCase(userRepository);
   // plugins

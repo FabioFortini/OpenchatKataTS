@@ -1,9 +1,25 @@
-import { describe, test } from 'node:test';
+import { after, before, describe, test } from 'node:test';
 import * as assert from 'node:assert';
 import { runApp } from '../../helper';
 import { RegisterUserRequest } from '../../../src/domain/register-user-request';
+import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
+import { Migrate } from '@prisma/migrate';
 
-describe('users route', () => {
+describe('users route', async () => {
+  let container: StartedPostgreSqlContainer;
+
+  before(async () => {
+    container = await new PostgreSqlContainer().start();
+    process.env.DATABASE_URL = container.getConnectionUri();
+    const migrate = new Migrate('prisma/schema.prisma');
+    await migrate.applyMigrations();
+    migrate.stop();
+  });
+
+  after(() => {
+    container.stop();
+  });
+
   test('register a new user', async (t) => {
     const app = await runApp(t);
     const request: RegisterUserRequest = {
