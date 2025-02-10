@@ -7,7 +7,7 @@ import { RegisterUserUseCase } from './domain/register-user-use-case';
 // import { PrismaUserRepository } from './persistence/prisma-user-repository';
 import { InMemoryUserRepository } from './persistence/in-memory-user-repository';
 
-export const app: FastifyPluginAsync = async (fastify): Promise<void> => {
+const app: FastifyPluginAsync = async (fastify): Promise<void> => {
   // const client = new PrismaClient()
   // const userRepository = new PrismaUserRepository(client)
   const userRepository = new InMemoryUserRepository();
