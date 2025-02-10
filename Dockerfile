@@ -16,6 +16,7 @@ COPY --from=build /usr/src/app/package*.json ./
 RUN npm ci --production
 
 COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/prisma ./prisma
 COPY --from=build /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
 CMD [ "npm", "start" ]
