@@ -1,5 +1,5 @@
-import { after, before, describe, test } from 'node:test';
-import * as assert from 'node:assert';
+import { after, before, describe, beforeEach, test } from 'node:test';
+import { deepStrictEqual, equal } from 'node:assert';
 import { runApp } from '../../helper';
 import { RegisterUserRequest } from '../../../src/domain/register-user-request';
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
@@ -7,57 +7,43 @@ import { Migrate } from '@prisma/migrate';
 
 describe('users route', async () => {
   let container: StartedPostgreSqlContainer;
+  let migrate: Migrate;
 
   before(async () => {
     container = await new PostgreSqlContainer().start();
     process.env.DATABASE_URL = container.getConnectionUri();
-    const migrate = new Migrate('prisma/schema.prisma');
+    migrate = new Migrate('prisma/schema.prisma');
+  });
+
+  beforeEach(async () => {
+    await migrate.reset();
     await migrate.applyMigrations();
-    migrate.stop();
   });
 
   after(() => {
+    migrate.stop();
     container.stop();
   });
 
   test('register a new user', async (t) => {
     const app = await runApp(t);
-    const request: RegisterUserRequest = {
-      username: 'pino2',
-      password: 'dei palazzi2',
-      about: 'ciao morris2',
-    };
+    const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
 
-    const res = await app.inject({
-      method: 'POST',
-      url: '/users',
-      body: request,
-    });
+    const res = await app.inject({ method: 'POST', url: '/users', body: request });
 
-    assert.deepStrictEqual(JSON.parse(res.payload), {
-      id: '1',
-      username: 'pino',
-      about: 'ciao morris',
-    });
+    deepStrictEqual(JSON.parse(res.payload), { id: '1', username: 'pino', about: 'ciao morris' });
   });
 
   test('register an already existing user', async (t) => {
     const app = await runApp(t);
-    const request: RegisterUserRequest = {
-      username: 'pino',
-      password: 'dei palazzi',
-      about: 'ciao morris',
-    };
-    await app.inject({ method: 'POST', url: '/users', body: request });
+    const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
+    const firstResponse = await app.inject({ method: 'POST', url: '/users', body: request });
 
-    const res = await app.inject({
-      method: 'POST',
-      url: '/users',
-      body: request,
-    });
+    const lastResponse = await app.inject({ method: 'POST', url: '/users', body: request });
 
-    assert.equal(res.statusCode, 400);
-    assert.equal(res.payload, 'Username already in use');
+    equal(firstResponse.statusCode, 200);
+    equal(lastResponse.statusCode, 400);
+    equal(lastResponse.payload, 'Username already in use');
   });
 
   test('no users found', async (t) => {
@@ -65,6 +51,6 @@ describe('users route', async () => {
 
     const res = await app.inject({ method: 'GET', url: '/users' });
 
-    assert.equal(res.payload, '[]');
+    equal(res.payload, '[]');
   });
 });
