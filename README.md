@@ -23,9 +23,15 @@ Run the test cases.
 
 If you want to format the whole project with prettier manually.
 
-### `npm run prisma:generate`
+### `npm run prisma`
 
-Updates the prisma client code in order to be typesafe and reflect the schema defined in `./prisma/schema.prisma`
+Run Prisma command. Through this command it is possible to:
+- Generate the Prisma client code (`npm run prisma generate`)
+- Generate a migration file from differences between the schema 
+
+  and the local database (`npm run prisma migrate dev`)
+- Migrate the database schema (`npm run prisma migrate deploy`)
+
 
 ## Code Formatting
 
