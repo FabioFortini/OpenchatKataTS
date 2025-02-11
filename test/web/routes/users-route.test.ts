@@ -4,7 +4,6 @@ import { runApp } from '../../helpers/app-runner';
 import { RegisterUserRequest } from '../../../src/domain/register-user-request';
 import { DatabaseContainer } from '../../helpers/database-container';
 
-
 describe('users route', async () => {
   const database = new DatabaseContainer();
   before(() => database.start());
@@ -12,31 +11,32 @@ describe('users route', async () => {
   after(() => database.stop());
 
   test('register a new user', async (t) => {
-    const app = await runApp(t);
+    const client = await runApp(t);
     const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
 
-    const res = await app.inject({ method: 'POST', url: '/users', body: request });
+    const res = await client.post('/users', request);
 
-    deepStrictEqual(JSON.parse(res.payload), { id: '1', username: 'pino', about: 'ciao morris' });
+    deepStrictEqual(res.status, 200);
+    deepStrictEqual(res.data, { id: '1', username: 'pino', about: 'ciao morris' });
   });
 
   test('register an already existing user', async (t) => {
-    const app = await runApp(t);
+    const client = await runApp(t);
     const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
-    const firstResponse = await app.inject({ method: 'POST', url: '/users', body: request });
+    const firstResponse = await client.post('/users', request);
 
-    const lastResponse = await app.inject({ method: 'POST', url: '/users', body: request });
+    const lastResponse = await client.post('/users', request);
 
-    equal(firstResponse.statusCode, 200);
-    equal(lastResponse.statusCode, 400);
-    equal(lastResponse.payload, 'Username already in use');
+    equal(firstResponse.status, 200);
+    equal(lastResponse.status, 400);
+    equal(lastResponse.data, 'Username already in use');
   });
 
   test('no users found', async (t) => {
-    const app = await runApp(t);
+    const client = await runApp(t);
 
-    const res = await app.inject({ method: 'GET', url: '/users' });
+    const res = await client.get('/users');
 
-    equal(res.payload, '[]');
+    deepStrictEqual(res.data, []);
   });
 });

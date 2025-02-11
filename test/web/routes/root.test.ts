@@ -3,9 +3,9 @@ import * as assert from 'node:assert';
 import { runApp } from '../../helpers/app-runner';
 
 test('default root route', async (t) => {
-  const app = await runApp(t);
+  const client = await runApp(t);
 
-  const res = await app.inject({ url: '/' });
+  const res = await client.get('/');
 
-  assert.deepStrictEqual(JSON.parse(res.payload), { root: true });
+  assert.deepStrictEqual(res.data, { root: true });
 });

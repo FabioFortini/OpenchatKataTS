@@ -1,9 +1,9 @@
 export type Config = {
-  database_url: string;
+  port: number;
+  logger: boolean;
 };
 
-export function fromEnv(): Config {
-  return {
-    database_url: process.env.DATABASE_URL || 'postgres://postgres:password@localhost:5432/postgres',
-  };
-}
+export const defaultConfig: Config = {
+  port: 3000,
+  logger: true,
+};
