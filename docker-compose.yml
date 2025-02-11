@@ -19,7 +19,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    env_file:
-      - .env
+    environment:
+      DATABASE_URL: postgres://openchat:password@postgres:5432/openchat
     ports:
       - '3000:3000'

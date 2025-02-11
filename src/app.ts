@@ -28,7 +28,7 @@ export function createApp(config: Config): App {
   return {
     async start() {
       return fastify
-        .listen({ port: config.port })
+        .listen({ port: config.port, host: '0.0.0.0' })
         .then(() => {})
         .catch((err) => fastify.log.error(err));
     },
