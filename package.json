@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register \"test/**/*.test.ts\"",
+    "test": "npm run build:ts && vitest run",
+    "coverage": "npm run build:ts && vitest run --coverage",
     "start": "npm run prisma migrate deploy && node dist/index.js",
     "build:ts": "tsc",
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" \"tsc -w\" \"node --watch dist/index.js\"",
@@ -26,14 +27,14 @@
     "@prisma/migrate": "^6.3.1",
     "@testcontainers/postgresql": "^10.18.0",
     "@types/node": "^22.1.0",
+    "@vitest/coverage-v8": "^3.0.5",
     "axios": "^1.7.9",
-    "c8": "^10.1.2",
     "concurrently": "^9.0.0",
     "fastify-tsconfig": "^2.0.0",
     "prettier": "3.5.0",
     "prisma": "^6.3.0",
     "testcontainers": "^10.18.0",
-    "ts-node": "^10.4.0",
-    "typescript": "~5.6.3"
+    "typescript": "~5.6.3",
+    "vitest": "^3.0.5"
   }
 }

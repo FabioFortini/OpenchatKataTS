@@ -3,7 +3,7 @@ export type Config = {
   logger: boolean;
 };
 
-export const defaultConfig: Config = {
+export const defaultCfg: Config = {
   port: 3000,
   logger: true,
 };

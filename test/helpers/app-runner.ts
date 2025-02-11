@@ -1,19 +1,18 @@
 import axios, { AxiosInstance } from 'axios';
 import { createApp } from '../../src/app';
-import { Config, defaultConfig } from '../../src/config';
-import * as test from 'node:test';
+import { Config, defaultCfg } from '../../src/config';
 
-export async function runApp(t: TestContext, config: Config = defaultConfig): Promise<AxiosInstance> {
+export async function runApp(config: Config = defaultCfg, test: (client: AxiosInstance) => Promise<void>): Promise<void> {
   const app = createApp({ ...config, logger: false });
-  t.after(() => app.stop());
   await app.start();
-  return axios.create({
-    baseURL: `http://localhost:${config.port}`,
-    headers: { 'Content-Type': 'application/json' },
-    validateStatus: () => true,
-  });
+  try {
+    const client = axios.create({
+      baseURL: `http://localhost:${config.port}`,
+      headers: { 'Content-Type': 'application/json' },
+      validateStatus: () => true,
+    })
+    await test(client);
+  } finally {
+    await app.stop();
+  }
 }
-
-export type TestContext = {
-  after: typeof test.after;
-};

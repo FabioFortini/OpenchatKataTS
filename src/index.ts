@@ -1,6 +1,6 @@
-import { defaultConfig } from './config';
+import { defaultCfg } from './config';
 import { createApp } from './app';
 
-createApp(defaultConfig)
+createApp(defaultCfg)
   .start()
   .catch(() => process.exit(1));

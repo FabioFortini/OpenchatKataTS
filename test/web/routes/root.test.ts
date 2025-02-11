@@ -1,11 +1,13 @@
-import { test } from 'node:test';
-import * as assert from 'node:assert';
+import { describe, expect, it } from 'vitest';
 import { runApp } from '../../helpers/app-runner';
+import { defaultCfg } from '../../../src/config';
 
-test('default root route', async (t) => {
-  const client = await runApp(t);
+describe('/', async () => {
+  it('default root route', async () => {
+    await runApp(defaultCfg, async (client) => {
+      const res = await client.get('/');
 
-  const res = await client.get('/');
-
-  assert.deepStrictEqual(res.data, { root: true });
+      expect(res.data).toStrictEqual({ root: true });
+    });
+  });
 });

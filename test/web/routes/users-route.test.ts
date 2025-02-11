@@ -1,42 +1,46 @@
-import { after, before, beforeEach, describe, test } from 'node:test';
-import { deepStrictEqual, equal } from 'node:assert';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { runApp } from '../../helpers/app-runner';
 import { RegisterUserRequest } from '../../../src/domain/register-user-request';
 import { DatabaseContainer } from '../../helpers/database-container';
+import { defaultCfg } from '../../../src/config';
 
-describe('users route', async () => {
+describe('/users', async () => {
   const database = new DatabaseContainer();
-  before(() => database.start());
+  beforeAll(() => database.start());
   beforeEach(() => database.restore());
-  after(() => database.stop());
+  afterAll(() => database.stop());
 
-  test('register a new user', async (t) => {
-    const client = await runApp(t);
-    const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
+  it('register a new user', async () => {
+    await runApp(defaultCfg, async (client) => {
+      const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
 
-    const res = await client.post('/users', request);
+      const res = await client.post('/users', request);
 
-    deepStrictEqual(res.status, 200);
-    deepStrictEqual(res.data, { id: '1', username: 'pino', about: 'ciao morris' });
+      expect(res.status).toBe(200);
+      expect(res.data).toStrictEqual({ id: '1', username: 'pino', about: 'ciao morris' });
+    });
   });
 
-  test('register an already existing user', async (t) => {
-    const client = await runApp(t);
-    const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
-    const firstResponse = await client.post('/users', request);
+  it('register an already existing user', async () => {
+    await runApp(defaultCfg, async (client) => {
+      const request: RegisterUserRequest = { username: 'pino', password: 'dei palazzi', about: 'ciao morris' };
+      const firstResponse = await client.post('/users', request);
 
-    const lastResponse = await client.post('/users', request);
+      const lastResponse = await client.post('/users', request);
 
-    equal(firstResponse.status, 200);
-    equal(lastResponse.status, 400);
-    equal(lastResponse.data, 'Username already in use');
+      expect(firstResponse.status).toBe(200);
+      expect(lastResponse.status).toBe(400);
+      expect(lastResponse.data).toStrictEqual('Username already in use');
+    });
   });
 
-  test('no users found', async (t) => {
-    const client = await runApp(t);
+  it('no users found', async () => {
+    await runApp(defaultCfg, async (client) => {
 
-    const res = await client.get('/users');
+      const res = await client.get('/users');
 
-    deepStrictEqual(res.data, []);
+      expect(res.status).toBe(200);
+      expect(res.data).toStrictEqual([]);
+    });
   });
 });
