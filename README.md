@@ -31,6 +31,7 @@ npm run test
 ```
 
 If you want to run tests with coverage run:
+
 ```
 npm run coverage
 ```

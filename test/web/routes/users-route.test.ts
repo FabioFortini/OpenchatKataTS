@@ -36,7 +36,6 @@ describe('/users', async () => {
 
   it('no users found', async () => {
     await runApp(defaultCfg, async (client) => {
-
       const res = await client.get('/users');
 
       expect(res.status).toBe(200);
