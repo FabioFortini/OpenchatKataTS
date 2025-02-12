@@ -3,18 +3,24 @@ import { usersRoutes } from './web/routes/users-routes';
 import { rootRoute } from './web/routes/root-route';
 import sensible from '@fastify/sensible';
 import { RegisterUserUseCase } from './domain/register-user-use-case';
-import { PrismaClient } from '@prisma/client';
-import { PrismaUserRepository } from './persistence/prisma-user-repository';
+// import { PrismaClient } from '@prisma/client';
+// import { PrismaUserRepository } from './persistence/prisma-user-repository';
 import { Config } from './config';
 import { AllUsersUseCase } from './domain/all-users-use-case';
+import { buildDatabase } from './persistence/database';
+import { KyselyUserRepository } from './persistence/kysely-user-repository';
 
 const plugins: FastifyPluginAsync = async (fastify) => {
   fastify.register(sensible);
 };
 
 const routes: FastifyPluginAsync = async (fastify) => {
-  const client = new PrismaClient();
-  const userRepository = new PrismaUserRepository(client);
+  // const client = new PrismaClient();
+  // const userRepository = new PrismaUserRepository(client);
+  const database = buildDatabase(process.env.DATABASE_URL!);
+  fastify.addHook('onClose', () => database.destroy());
+
+  const userRepository = new KyselyUserRepository(database);
   const registerUserUseCase = new RegisterUserUseCase(userRepository);
   const allUsersUseCase = new AllUsersUseCase(userRepository);
 
