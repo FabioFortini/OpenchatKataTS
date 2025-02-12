@@ -3,13 +3,17 @@ import { FastifyInstance } from 'fastify/types/instance';
 import { RegisterUserUseCase } from '../../domain/register-user-use-case';
 import { RegisterUserRequest } from '../../domain/register-user-request';
 import { User } from '../../domain/user';
+import { AllUsersUseCase } from '../../domain/all-users-use-case';
 
-type UsersDependencies = { registerUserUseCase: RegisterUserUseCase };
+type UsersDependencies = {
+  registerUserUseCase: RegisterUserUseCase;
+  allUsersUseCase: AllUsersUseCase;
+};
 type FastifyRegisterUserRequest = FastifyRequest<{ Body: RegisterUserRequest }>;
 
 export const usersRoutes: FastifyPluginAsync<UsersDependencies> = async (fastify: FastifyInstance, deps) => {
   fastify.get('/users', async function (request: FastifyRequest, reply: FastifyReply) {
-    return [];
+    return await deps.allUsersUseCase.execute();
   });
 
   fastify.post('/users', async function (request: FastifyRegisterUserRequest, reply: FastifyReply) {

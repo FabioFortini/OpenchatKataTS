@@ -42,4 +42,18 @@ describe('/users', async () => {
       expect(res.data).toStrictEqual([]);
     });
   });
+
+  it('some users found', async () => {
+    await runApp(defaultCfg, async (client) => {
+      await client.post('/users', { username: 'user1', password: 'pwd', about: 'about1' });
+      await client.post('/users', { username: 'user2', password: 'pwd', about: 'about2' });
+      const res = await client.get('/users');
+
+      expect(res.status).toBe(200);
+      expect(res.data).toStrictEqual([
+        { id: 1, username: 'user1', about: 'about1' },
+        { id: 2, username: 'user2', about: 'about2' },
+      ]);
+    });
+  });
 });

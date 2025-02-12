@@ -15,10 +15,16 @@ export class PrismaUserRepository implements UserRepository {
       data: { username, password, about },
     });
 
-    return {
-      id: created.id,
-      username: created.username,
-      about: created.about,
-    };
+    return this.toUser(created);
+  }
+
+  async allUsers(): Promise<User[]> {
+    const users = await this.client.user.findMany();
+
+    return users.map((u) => this.toUser(u));
+  }
+
+  private toUser(u: any): User {
+    return { id: u.id, username: u.username, about: u.about };
   }
 }

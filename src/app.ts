@@ -6,6 +6,7 @@ import { RegisterUserUseCase } from './domain/register-user-use-case';
 import { PrismaClient } from '@prisma/client';
 import { PrismaUserRepository } from './persistence/prisma-user-repository';
 import { Config } from './config';
+import { AllUsersUseCase } from './domain/all-users-use-case';
 
 const plugins: FastifyPluginAsync = async (fastify) => {
   fastify.register(sensible);
@@ -15,9 +16,10 @@ const routes: FastifyPluginAsync = async (fastify) => {
   const client = new PrismaClient();
   const userRepository = new PrismaUserRepository(client);
   const registerUserUseCase = new RegisterUserUseCase(userRepository);
+  const allUsersUseCase = new AllUsersUseCase(userRepository);
 
   fastify.register(rootRoute);
-  fastify.register(usersRoutes, { registerUserUseCase });
+  fastify.register(usersRoutes, { registerUserUseCase, allUsersUseCase });
 };
 
 export function createApp(config: Config) {
