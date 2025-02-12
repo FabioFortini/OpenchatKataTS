@@ -6,30 +6,34 @@
   "scripts": {
     "test": "npm run build && vitest run",
     "coverage": "npm run build && vitest run --coverage",
-    "start": "npm run prisma migrate deploy && node .",
+    "start": "npm run migrations && node .",
     "build": "tsc",
     "dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" \"tsc -w\" \"node --watch .\"",
     "format": "prettier . --write",
-    "prisma": "prisma"
+    "generate-database-client": "prisma generate",
+    "migrations": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@fastify/sensible": "^6.0.0",
-    "@prisma/client": "^6.3.0",
-    "fastify": "^5.0.0"
+    "fastify": "^5.0.0",
+    "kysely": "^0.27.5",
+    "pg": "^8.13.2",
+    "prisma": "^6.3.0"
   },
   "devDependencies": {
     "@prisma/migrate": "^6.3.1",
     "@testcontainers/postgresql": "^10.18.0",
     "@types/node": "^22.1.0",
+    "@types/pg": "^8.11.11",
     "@vitest/coverage-v8": "^3.0.5",
     "axios": "^1.7.9",
     "concurrently": "^9.0.0",
     "fastify-tsconfig": "^2.0.0",
     "prettier": "3.5.0",
-    "prisma": "^6.3.0",
+    "prisma-kysely": "^1.8.0",
     "testcontainers": "^10.18.0",
     "typescript": "~5.7.3",
     "vitest": "^3.0.5"
