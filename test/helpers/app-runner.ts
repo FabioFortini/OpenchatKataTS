@@ -6,7 +6,7 @@ export async function runApp(
   config: Config = defaultCfg,
   test: (client: AxiosInstance) => Promise<void>,
 ): Promise<void> {
-  const app = createApp({ ...config, logger: true });
+  const app = createApp({ ...config, logger: false });
   await app.start();
   try {
     const client = axios.create({
