@@ -7,10 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tsc && vitest run",
-    "coverage": "tsc && vitest run --coverage",
+    "test": "npm run build:ts && vitest run",
+    "coverage": "npm run build:ts && vitest run --coverage",
     "start": "npm run prisma migrate deploy && node dist/index.js",
-    "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" \"tsc -w\" \"node --watch dist/index.js\"",
+    "build:ts": "tsc",
+    "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" \"tsc -w\" \"node --watch dist/index.js\"",
     "format": "prettier . --write",
     "prisma": "prisma"
   },
