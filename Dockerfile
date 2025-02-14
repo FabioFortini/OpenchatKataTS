@@ -6,7 +6,7 @@ RUN npm ci
 
 COPY . .
 RUN npm run prisma generate
-RUN npm run build:ts
+RUN npm run build
 
 FROM node:22.13-alpine
 WORKDIR /usr/src/app
